@@ -139,3 +139,4 @@ WHERE number < 200
 GROUP BY type 
 HAVING MIN(weight) >= 2 AND MAX(weight) >= 10 
 ORDER BY MIN(height) DESC, MAX(height) DESC ; 
+
