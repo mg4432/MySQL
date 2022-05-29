@@ -161,3 +161,82 @@ SELECT ability.number, name
 FROM mypokemon
 RIGHT JOIN ability 
 ON mypokemon.number = ability.number ; 
+
+
+## PRACTICE 
+DROP DATABASE IF EXISTS pokemon ; 
+CREATE DATABASE pokemon ;
+USE pokemon ; 
+
+CREATE TABLE mypokemon (
+	number INT, 
+    name VARCHAR(20),
+    type VARCHAR(20)); 
+    
+INSERT INTO mypokemon (number, name, type)
+VALUE (10, 'caterpie', 'bug'),
+	  (25, 'pikachu', 'electric'),
+      (26, 'raichu', 'electric'),
+      (133, 'eevee', 'normal'),
+      (152, 'chikorita', 'grass')
+      ;
+      
+CREATE TABLE ability (
+	number INT, 
+    height FLOAT,
+    weight float,
+    attack INT,
+    defense INT,
+    speed INT) ; 
+
+INSERT INTO ability (number, height, weight, attack, defense, speed)
+VALUE (10, 0.3, 2.9, 30, 35, 45),
+	  (25, 0.4, 6, 55, 40, 90),
+      (26, 0.8, 30, 90, 55, 110),
+      (133, 0.3, 6.5, 55, 50, 55),
+      (137, 0.8, 36.5, 60, 70, 40),
+      (152, 0.9, 6.4, 49, 65, 45),
+      (153, 1.2, 15.8, 62, 80, 60),
+      (172, 0.3, 2, 40, 15, 60),
+      (470, 1, 25.5, 110, 130, 95)
+      ;
+
+SELECT * FROM mypokemon ; 
+SELECT * FROM ability ; 
+
+# MISSION 1. 내 포켓몬의 타입 별 키의 평균 가져오기 
+SELECT type, AVG(height) 
+FROM mypokemon LEFT JOIN ability 
+ON mypokemon.number = ability.number  
+GROUP BY type ; 
+
+# MISSION 2. 내 포켓몬의 타입 별 몸무게의 평균 가져오기 
+SELECT type, AVG(weight) 
+FROM mypokemon LEFT JOIN ability 
+ON mypokemon.number = ability.number 
+GROUP BY type ; 
+
+# MISSION 3. 내 포켓몬의 타입 별 키의 평균과 몸무게의 평균 함께 가져오기 
+SELECT type, AVG(height) AS '키의 평균', AVG(weight) AS '몸무게의 평균' 
+FROM mypokemon LEFT JOIN ability 
+ON mypokemon.number = ability.number 
+GROUP BY type ; 
+
+# MISSION 4. 번호가 100 이상인 포켓몬들의 번호, 이름, 공격력, 방어력 가져오기 
+SELECT mypokemon.number, name, attack, defense # number로 JOIN하기 때문에 특정 table의 number로 지정해줘야 함. 
+FROM mypokemon LEFT JOIN ability 
+ON mypokemon.number = ability.number 
+WHERE mypokemon.number >= 100 ;  
+
+# MISSION 5. 공격력과 방어력의 합이 큰 순서대로 포켓몬들의 이름 나열 
+SELECT name,  attack, defense 
+FROM mypokemon LEFT JOIN ability 
+ON mypokemon.number = ability.number 
+ORDER BY attack + defense DESC; 
+
+# MISSION 6. 속도가 가장 빠른 포켓몬의 이름 가져오기 
+SELECT name 
+FROM mypokemon LEFT JOIN ability 
+ON mypokemon.number = ability.number 
+ORDER BY speed DESC  
+LIMIT 1; 
